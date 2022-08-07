@@ -1,35 +1,35 @@
 ﻿namespace MineSweeperLogic;
 public class Board
 {
-    private  int Width { get; set; }
-    private  int Height { get; set; }
-    private  int MineCount { get; set; }
-    public Cell[,] Cells { get; set; }  
+    private int Width { get; set; }
+    private int Height { get; set; }
+    private int MineCount { get; set; }
+    public Cell[,] Cells { get; set; }
     private List<Mine> Mines { get; set; } = new List<Mine>();
-    
+
     public event EventHandler BoardMineClickedEvent;
-    
+
     public Board(int width, int height, int mineCount)
     {
         DetermineMineCells(mineCount, width, height);
         Width = width;
         Height = height;
         MineCount = mineCount;
-        
+
         Cells = new Cell[width, height];
-        
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 MineState mineState = MineState.Empty;
-                if( Mines.Where( a => a.X == x && a.Y == y).Count() > 0)
+                if (Mines.Where(a => a.X == x && a.Y == y).Count() > 0)
                 {
                     mineState = MineState.Mine;
                 }
 
-                var cell = new Cell(){ MineState = mineState};
-                cell.MineClicked+= MineClicked;
+                var cell = new Cell() { MineState = mineState };
+                cell.MineClicked += MineClicked;
                 Cells[x, y] = cell;
             }
         }
@@ -42,22 +42,22 @@ public class Board
         {
             for (int y = 0; y < Cells.GetLength(1); y++)
             {
-                if(Cells[x,y].IsMine)
+                if (Cells[x, y].MineState == MineState.Mine)
                 {
-                    var startX = x-1;
-                    var endX = startX + 3;
+                    var startX = x - 1 < 0 ? 0 : x - 1;
+                    var endX = startX + 3 > Cells.GetLength(0) ? Cells.GetLength(0) : startX + 3;
                     for (int i = startX; i < endX; i++)
                     {
-                        var startY = y-1;
-                        var endY = startY + 3;
+                        var startY = y - 1 < 0 ? 0 : y - 1;
+                        var endY = startY + 3 > Cells.GetLength(1) ? Cells.GetLength(1) : startY + 3;
                         for (int z = startY; z < endY; z++)
                         {
-                            var foundCell = Cells[i,z];
-                           if(foundCell.MineState != MineState.Mine)
-                           {
+                            var foundCell = Cells[i, z];
+                            if (foundCell.MineState != MineState.Mine)
+                            {
                                 foundCell.MineState = MineState.BordersMine;
-                                foundCell.Value+=1;
-                           }
+                                foundCell.Value += 1;
+                            }
                         }
                     }
                 }
@@ -66,37 +66,49 @@ public class Board
     }
     public void LeftClicked(int x, int y)
     {
-        var startX = x-1;
-        var endX = startX + 3;
-        for (int i = startX; i < endX; i++)
+        try
         {
-            var startY = y-1;
-            var endY = startY + 3;
-            for (int z = startY; z < endY; z++)
+            var maxX = Cells.GetLength(0) -1;
+            var maxY = Cells.GetLength(1) -1;
+
+            var startX = x - 1 <= 0 ? 0 : x - 1;
+            var endX = startX + 3 >= maxX ? maxX : startX + 3;
+
+            for (int i = startX; i < endX; i++)
             {
-                var foundCell = Cells[i,z ];
-                if(z == y && i == x )
+                var startY = y - 1 <= 0 ? 0 : y - 1;
+                var endY = startY + 3 >= maxY ? maxY : startY + 3;
+                for (int z = startY; z < endY; z++)
                 {
-                    foundCell.LeftClick();
-                    break;
-                }
-                if(foundCell.MineState == MineState.Empty)
-                {
-                    foundCell.Reveal();
-                    LeftClicked(i,z);
+                    var foundCell = Cells[i, z];
+                    if (z == y && i == x)
+                    {
+                        foundCell.LeftClick();
+                        //break;
+                    }
+                    if (foundCell.MineState == MineState.Empty && foundCell.CellState != CellState.Revealed)
+                    {
+                        foundCell.Reveal();
+                        //LeftClicked(i, z);
+                    }
                 }
             }
         }
+        catch (Exception exception)
+        {
+            Console.WriteLine( exception.ToString());
+        }
+
     }
 
     public void RightClicked(int x, int y)
     {
-        Cells[x,y].RightClick();
+        Cells[x, y].RightClick();
     }
 
     public void MineClicked(object sender, EventArgs e)
     {
-        BoardMineClickedEvent.Invoke(sender,e);
+        BoardMineClickedEvent.Invoke(sender, e);
     }
 
     private void DetermineMineCells(int mineCount, int width, int height)
@@ -105,7 +117,7 @@ public class Board
         {
             var x = new Random().Next(width);
             var y = new Random().Next(height);
-            Mines.Add(new Mine(){ X = x, Y=y});
+            Mines.Add(new Mine() { X = x, Y = y });
         }
     }
 }

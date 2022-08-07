@@ -1,0 +1,67 @@
+﻿@page "/fetchdata"
+@using MineSweeperLogic
+
+<style>
+
+    .Revealed{
+        width: 100px;
+        height: 100px;
+        background-color: white;
+    }
+    .Hidden{
+        width: 100px;
+        height: 100px;
+        background-color: gray;
+    }
+    .flagger{
+        width: 100px;
+        height: 100px;
+        background-color:red;
+    }
+    .Revealed.Mine{
+        width: 100px;
+        height: 100px;
+        background-color:white;
+        border: red;
+        border-width: 5px;
+        border-style: solid;
+    }
+</style>
+
+<div class="container">
+
+    @for (int i = Height -1; i >= 0; i--)
+    {
+        <div class="row">
+            @for (int z = 0; z <= Width -1 ; z++)
+            {
+                var identifier = new {i,z};
+                var cell = Game.Board.Cells[i,z];
+
+                <div class="col">
+                    <input type="button" id="@i, @z"  class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.i, identifier.z))" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+    public int Width { get; set; } = 10;
+    public int Height { get; set; } = 10;
+    public int MineCount { get; set; } = 5;
+    public Game Game { get; set; }
+
+    public void btnClick(int i, int z)
+    {
+        Console.WriteLine( $"found value i: { i } found value z : { z}");
+        Game.LeftClicked(i ,z );
+        this.StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Game = new Game(Width, Height, MineCount);
+    }
+}
