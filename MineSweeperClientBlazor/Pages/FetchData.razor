@@ -2,16 +2,74 @@
 @using MineSweeperLogic
 
 <style>
-
+    .Playing
+    {
+        visibility: hidden;
+    }
+    .Lost   
+    {
+        visibility: visible;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: solid 1px gray;
+    }
+    .Lost h1
+    {
+        margin: 100px;
+    }
+    .container.Playing
+    {
+        visibility: visible;
+    }
+    .container.Lost
+    {
+        opacity: 0.2;
+    }
     .Revealed{
+        
         width: 100px;
         height: 100px;
         background-color: white;
+        border-color: white;
+        
     }
-    .Hidden{
+    
+    div.Hidden
+    {
+        visibility: hidden;
+    }
+    
+    div.Revealed.BordersMine
+    {
+        visibility: visible;
+        display: contents;
+    }
+    div.Revealed.Empty
+    {
+        display: none;
+    }
+    input.Revealed.Empty
+    {
+        display: none;
+    }
+    input.Revealed.BordersMine {
+        /*
         width: 100px;
         height: 100px;
-        background-color: gray;
+        background-color: lightblue;
+        background-image: ;
+        */
+        display: none;
+    }
+    input.Hidden{
+        width: 100px;
+        height: 100px;
+        background-color: lightgray;
+        border: solid 1px gray;
     }
     .flagger{
         width: 100px;
@@ -21,14 +79,11 @@
     .Revealed.Mine{
         width: 100px;
         height: 100px;
-        background-color:white;
-        border: red;
-        border-width: 5px;
-        border-style: solid;
+        background-color:red;
     }
 </style>
 
-<div class="container">
+<div class="container @Game.GameState.ToString() ">
 
     @for (int i = Height -1; i >= 0; i--)
     {
@@ -39,11 +94,20 @@
                 var cell = Game.Board.Cells[i,z];
 
                 <div class="col">
+
                     <input type="button" id="@i, @z"  class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.i, identifier.z))" />
+                    <div class="@cell.CellState.ToString() @cell.MineState.ToString()">
+                        <i class="bi bi-1-circle "></i>
+                    </div>
+
                 </div>
             }
         </div>
     }
+</div>
+
+<div class="@Game.GameState.ToString()">
+    <h1>You loose!</h1>
 </div>
 
 

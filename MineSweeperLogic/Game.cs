@@ -3,7 +3,7 @@ namespace MineSweeperLogic;
 public class Game
 {
     public Board Board { get; set; }
-    public bool GameState {get; set;}
+    public GameState GameState {get; set;} = GameState.Playing;
 
     public Game(int width, int height, int mineCount)
     {
@@ -21,8 +21,14 @@ public class Game
         Board.RightClicked(x,y);
     }
 
-    public void MineClicked(object sender, EventArgs e)
+    public void MineClicked(object? sender, EventArgs e)
     {
-        GameState = false;
+        GameState = GameState.Lost;
     }
+}
+
+public enum GameState
+{
+    Playing,
+    Lost
 }

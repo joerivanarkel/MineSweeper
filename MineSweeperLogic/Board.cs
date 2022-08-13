@@ -1,4 +1,6 @@
-﻿namespace MineSweeperLogic;
+﻿using System.Diagnostics;
+
+namespace MineSweeperLogic;
 public class Board
 {
     private int Width { get; set; }
@@ -12,11 +14,10 @@ public class Board
     public Board(int width, int height, int mineCount)
     {
         DetermineMineCells(mineCount, width, height);
+        Cells = new Cell[width, height];
         Width = width;
         Height = height;
         MineCount = mineCount;
-
-        Cells = new Cell[width, height];
 
         for (int x = 0; x < width; x++)
         {
@@ -106,7 +107,7 @@ public class Board
         Cells[x, y].RightClick();
     }
 
-    public void MineClicked(object sender, EventArgs e)
+    public void MineClicked(object? sender, EventArgs e)
     {
         BoardMineClickedEvent.Invoke(sender, e);
     }
