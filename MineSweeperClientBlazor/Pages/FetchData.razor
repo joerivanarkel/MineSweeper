@@ -85,17 +85,19 @@
 
 <div class="container @Game.GameState.ToString() ">
 
-    @for (int i = Height -1; i >= 0; i--)
+    @for (int i = (Height -1); i >= 0; i--)
     {
         <div class="row">
-            @for (int z = 0; z <= Width -1 ; z++)
+            @for (int z = 0; z < Width  ; z++)
             {
-                var identifier = new {i,z};
+                //var identifier = new {i,z};
                 var cell = Game.Board.Cells[i,z];
+                var foundZ = z;
+                var foundI = i;
 
                 <div class="col">
 
-                    <input type="button" id="@i, @z"  class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.i, identifier.z))" />
+                    <input type="button" id="@i, @z"  class="@cell.CellState.ToString() @cell.MineState.ToString()" @onclick="(() => btnClick(foundZ, foundI))" />
                     <div class="@cell.CellState.ToString() @cell.MineState.ToString()">
                         <i class="bi bi-1-circle "></i>
                     </div>
@@ -117,10 +119,10 @@
     public int MineCount { get; set; } = 5;
     public Game Game { get; set; }
 
-    public void btnClick(int i, int z)
+    public void btnClick(int x, int y)
     {
-        Console.WriteLine( $"found value i: { i } found value z : { z}");
-        Game.LeftClicked(i ,z );
+        Console.WriteLine( $"found value x: { x} found value y: { y }");
+        Game.LeftClicked(y, x);
         this.StateHasChanged();
     }
 

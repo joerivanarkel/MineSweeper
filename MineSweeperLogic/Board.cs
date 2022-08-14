@@ -73,21 +73,25 @@ public class Board
             var maxY = Cells.GetLength(1) -1;
 
             var startX = x - 1 <= 0 ? 0 : x - 1;
-            var endX = startX + 3 >= maxX ? maxX : startX + 3;
+            var endX = x + 1 >= maxX ? maxX : x + 1;
 
-            for (int i = startX; i < endX; i++)
+            for (int i = startX; i <= endX; i++)
             {
                 var startY = y - 1 <= 0 ? 0 : y - 1;
-                var endY = startY + 3 >= maxY ? maxY : startY + 3;
-                for (int z = startY; z < endY; z++)
+                var endY = y +1 >= maxY ? maxY : y  +  1;
+                for (int z = startY; z <= endY; z++)
                 {
                     var foundCell = Cells[i, z];
-                    if (z == y && i == x)
+                    if (z == y && i == x) // the leftclicked cell
                     {
                         foundCell.LeftClick();
+                        if(foundCell.MineState == MineState.BordersMine)
+                        {
+                            break;
+                        }
                         //break;
                     }
-                    if (foundCell.MineState == MineState.Empty && foundCell.CellState != CellState.Revealed)
+                    if ((foundCell.MineState == MineState.Empty || foundCell.MineState == MineState.BordersMine ) && foundCell.CellState != CellState.Revealed)
                     {
                         foundCell.Reveal();
                         //LeftClicked(i, z);
