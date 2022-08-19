@@ -6,6 +6,17 @@
     {
         visibility: hidden;
     }
+    .Win   
+    {
+        visibility: visible;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: solid 1px gray;
+    }
     .Lost   
     {
         visibility: visible;
@@ -88,8 +99,8 @@
             .row{
                 width: @RowWidthInput;
             }
-        </style>
-            @for (int z = 0; z < Width -1 ; z++)
+        </style> 
+            @for (int z = 0; z <= Width -1 ; z++)
             {
                 var identifier = new {z, i};
                 var cell = Game.Board.Cells[z, i];
@@ -97,9 +108,6 @@
                 <div class="col cell">
 
                     <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.z, identifier.i))" oncontextmenu="@(() =>btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault="true"/>
-                    @* <div class="@cell.CellState.ToString() @cell.MineState.ToString()">
-                        <i class="bi bi-1-circle "></i>
-                    </div> *@
 
                 </div>
             }
@@ -108,14 +116,20 @@
 </div>
 
 <div class="@Game.GameState.ToString()">
-    <h1>You loose!</h1>
+    @if (Game.GameState == GameState.Lost)
+    {
+        <h1>You loose!</h1>
+    }
+    @if (Game.GameState == GameState.Win)
+    {
+        <h1>You win!</h1>
+    }
 </div>
 
-
 @code {
-    public int Width { get; set; } = 10;
-    public int Height { get; set; } = 10;
-    public int MineCount { get; set; } = 5;
+    public int Width { get; set; } = 30;
+    public int Height { get; set; } = 16;
+    public int MineCount { get; set; } = 99;
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
 
@@ -123,6 +137,7 @@
     {
         Console.WriteLine( $"found value z: { z } found value i : { i}");
         Game.LeftClicked(z, i);
+        Game.WinCheck();
         this.StateHasChanged();
     }
 
@@ -135,7 +150,7 @@
     protected override async Task OnInitializedAsync()
     {
         Game = new Game(Width, Height, MineCount);
-        var RowWidth = Width * 50;
+        var RowWidth = Width * 52;
         RowWidthInput = $"{RowWidth.ToString()}px";
     }
 }

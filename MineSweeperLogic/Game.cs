@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace MineSweeperLogic;
 
 public class Game
@@ -25,10 +27,21 @@ public class Game
     {
         GameState = GameState.Lost;
     }
+
+    public void WinCheck()
+    {
+        if(CheckCells())
+            GameState = GameState.Win;
+    }
+
+    private bool CheckCells()
+    {
+        var foundCells = from Cell cell in Board.Cells
+                        where (cell.CellState == CellState.Flagged || cell.CellState == CellState.Hidden) 
+                        && cell.MineState != MineState.Mine
+                        select cell;
+        return foundCells.Count() == 0;
+    }
 }
 
-public enum GameState
-{
-    Playing,
-    Lost
-}
+
