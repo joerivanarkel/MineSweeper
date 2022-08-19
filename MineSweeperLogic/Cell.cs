@@ -19,10 +19,9 @@ public class Cell
             }
         } 
     }
-
     public void Reveal()
     {
-        if(MineState != MineState.Mine)
+        if (MineState != MineState.Mine)
             CellState = CellState.Revealed;
     }
 

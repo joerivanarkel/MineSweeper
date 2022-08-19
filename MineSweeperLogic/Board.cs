@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace MineSweeperLogic;
+﻿namespace MineSweeperLogic;
 public class Board
 {
     private int Width { get; set; }
@@ -39,36 +37,55 @@ public class Board
 
     public void DetermineMineBorders()
     {
-        for (int x = 0; x < Cells.GetLength(0); x++)
+        try
         {
-            for (int y = 0; y < Cells.GetLength(1); y++)
+            for (int x = 0; x < Cells.GetLength(0); x++)
             {
-                if (Cells[x, y].MineState == MineState.Mine)
+                for (int y = 0; y < Cells.GetLength(1); y++)
                 {
-                    var startX = x - 1 < 0 ? 0 : x - 1;
-                    var endX = startX + 3 > Cells.GetLength(0) ? Cells.GetLength(0) : startX + 3;
-                    for (int i = startX; i < endX; i++)
+                    if (Cells[x, y].MineState == MineState.Mine)
                     {
-                        var startY = y - 1 < 0 ? 0 : y - 1;
-                        var endY = startY + 3 > Cells.GetLength(1) ? Cells.GetLength(1) : startY + 3;
-                        for (int z = startY; z < endY; z++)
+                        var maxX = Cells.GetLength(0) - 1;
+                        var maxY = Cells.GetLength(1) - 1;
+
+                        var startX = x - 1 <= 0 ? 0 : x - 1;
+                        var endX = x + 1 >= maxX ? maxX : x + 1;
+                        for (int i = startX; i <= endX; i++)
                         {
-                            var foundCell = Cells[i, z];
-                            if (foundCell.MineState != MineState.Mine)
+                            var startY = y - 1 <= 0 ? 0 : y - 1;
+                            var endY = y + 1 >= maxY ? maxY : y + 1;
+                            for (int z = startY; z <= endY; z++)
                             {
-                                foundCell.MineState = MineState.BordersMine;
-                                foundCell.Value += 1;
+                                var foundCell = Cells[i, z];
+                                if (foundCell.MineState != MineState.Mine)
+                                {
+                                    foundCell.MineState = MineState.BordersMine;
+                                    foundCell.Value += 1;
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        catch (System.Exception exception)
+        {
+            Console.WriteLine(exception.ToString());
+        }
     }
     public void LeftClicked(int x, int y)
     {
         try
         {
+            var clickedCell = Cells[x, y];
+            if (clickedCell.MineState == MineState.BordersMine && clickedCell.CellState != CellState.Revealed)
+            {
+                clickedCell.LeftClick();
+                return;
+            }
+            if(clickedCell.CellState == CellState.Revealed) { return; }
+            if(clickedCell.CellState == CellState.Flagged) { return; }
+
             var maxX = Cells.GetLength(0) -1;
             var maxY = Cells.GetLength(1) -1;
 
@@ -78,23 +95,22 @@ public class Board
             for (int i = startX; i <= endX; i++)
             {
                 var startY = y - 1 <= 0 ? 0 : y - 1;
-                var endY = y +1 >= maxY ? maxY : y  +  1;
+                var endY = y + 1 >= maxY ? maxY : y + 1;
                 for (int z = startY; z <= endY; z++)
                 {
                     var foundCell = Cells[i, z];
                     if (z == y && i == x) // the leftclicked cell
                     {
                         foundCell.LeftClick();
-                        if(foundCell.MineState == MineState.BordersMine)
-                        {
-                            break;
-                        }
-                        //break;
+                    }
+                    if (foundCell.MineState == MineState.BordersMine && foundCell.CellState != CellState.Revealed)
+                    {
+                        foundCell.Reveal();
                     }
                     if ((foundCell.MineState == MineState.Empty || foundCell.MineState == MineState.BordersMine ) && foundCell.CellState != CellState.Revealed)
                     {
                         foundCell.Reveal();
-                        //LeftClicked(i, z);
+                        ChainReveal(i, z);
                     }
                 }
             }
@@ -106,8 +122,45 @@ public class Board
 
     }
 
+    public void ChainReveal(int x, int y)
+    {
+        try
+        {
+            var maxX = Cells.GetLength(0) - 1;
+            var maxY = Cells.GetLength(1) - 1;
+
+            var startX = x - 1 <= 0 ? 0 : x - 1;
+            var endX = x + 1 >= maxX ? maxX : x + 1;
+
+            for (int i = startX; i <= endX; i++)
+            {
+                var startY = y - 1 <= 0 ? 0 : y - 1;
+                var endY = y + 1 >= maxY ? maxY : y + 1;
+                for (int z = startY; z <= endY; z++)
+                {
+                    var foundCell = Cells[i, z];
+                    if (foundCell.MineState == MineState.BordersMine && foundCell.CellState != CellState.Revealed)
+                    {
+                        foundCell.Reveal();
+                    }
+                    if (foundCell.MineState == MineState.Empty && foundCell.CellState != CellState.Revealed)
+                    {
+                        foundCell.Reveal();
+                        ChainReveal(i, z);
+                    }
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.ToString());
+        }
+    }
+
     public void RightClicked(int x, int y)
     {
+        var foundCell = Cells[x, y];
+        if (foundCell.CellState == CellState.Revealed){ return; }
         Cells[x, y].RightClick();
     }
 

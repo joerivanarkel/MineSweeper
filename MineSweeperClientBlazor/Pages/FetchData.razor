@@ -29,57 +29,52 @@
     {
         opacity: 0.2;
     }
+
+
     .Revealed{
-        
-        width: 100px;
-        height: 100px;
+        width: 50px;
+        height: 50px;
         background-color: white;
         border-color: white;
-        
     }
-    
-    div.Hidden
-    {
-        visibility: hidden;
-    }
-    
-    div.Revealed.BordersMine
-    {
-        visibility: visible;
-        display: contents;
-    }
-    div.Revealed.Empty
-    {
-        display: none;
-    }
+
     input.Revealed.Empty
     {
-        display: none;
+        border: solid 1px white;
+        font-size:0
     }
     input.Revealed.BordersMine {
-        /*
-        width: 100px;
-        height: 100px;
-        background-color: lightblue;
+        width: 50px;
+        height: 50px;
+        background-color: white;
         background-image: ;
-        */
-        display: none;
+        border: solid 1px white;
     }
     input.Hidden{
-        width: 100px;
-        height: 100px;
+        width: 50px;
+        height: 50px;
         background-color: lightgray;
         border: solid 1px gray;
+        font-size:0
     }
-    .flagger{
-        width: 100px;
-        height: 100px;
+    .Flagged{
+        width: 50px;
+        height: 50px;
         background-color:red;
+        border: solid 1px gray;
+        font-size:0
     }
     .Revealed.Mine{
-        width: 100px;
-        height: 100px;
+        width: 50px;
+        height: 50px;
         background-color:red;
+    }
+    .col.cell{
+        width: 50px;
+        height: 50px;
+    }
+    .row{
+        display: inline-flex;
     }
 </style>
 
@@ -88,23 +83,26 @@
     @for (int i = (Height -1); i >= 0; i--)
     {
         <div class="row">
-            @for (int z = 0; z < Width  ; z++)
+        <style>
+            .row{
+                width: @RowWidthInput;
+            }
+        </style>
+            @for (int z = 0; z < Width -1 ; z++)
             {
-                //var identifier = new {i,z};
-                var cell = Game.Board.Cells[i,z];
-                var foundZ = z;
-                var foundI = i;
+                var identifier = new {z, i};
+                var cell = Game.Board.Cells[z, i];
 
-                <div class="col">
+                <div class="col cell">
 
-                    <input type="button" id="@i, @z"  class="@cell.CellState.ToString() @cell.MineState.ToString()" @onclick="(() => btnClick(foundZ, foundI))" />
-                    <div class="@cell.CellState.ToString() @cell.MineState.ToString()">
+                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.z, identifier.i))"/>
+                    @* <div class="@cell.CellState.ToString() @cell.MineState.ToString()">
                         <i class="bi bi-1-circle "></i>
-                    </div>
+                    </div> *@
 
                 </div>
             }
-        </div>
+        </div><br>
     }
 </div>
 
@@ -114,20 +112,46 @@
 
 
 @code {
-    public int Width { get; set; } = 10;
-    public int Height { get; set; } = 10;
-    public int MineCount { get; set; } = 5;
+    public int Width { get; set; } = 30;
+    public int Height { get; set; } = 16;
+    public int MineCount { get; set; } = 99;
+    public string RowWidthInput { get; set; }
     public Game Game { get; set; }
+    public bool Flagging { get; set; }
 
-    public void btnClick(int x, int y)
+    public void btnClick(int z, int i)
     {
-        Console.WriteLine( $"found value x: { x} found value y: { y }");
-        Game.LeftClicked(y, x);
+        Console.WriteLine( $"found value z: { z } found value i : { i}");
+        if (Flagging == false)
+        {
+            Game.LeftClicked(z, i);
+        }
+        if (Flagging == true)
+        {
+            Game.RightClicked(z, i);
+        }
+
         this.StateHasChanged();
+    }
+
+    public void CheckboxClicked()
+    {
+        if (Flagging == true)
+        {
+            Flagging = false;
+            return;
+        }
+        if (Flagging == false)
+        {
+            Flagging = true;
+            return;
+        }
     }
 
     protected override async Task OnInitializedAsync()
     {
         Game = new Game(Width, Height, MineCount);
+        var RowWidth = Width * 50;
+        RowWidthInput = $"{RowWidth.ToString()}px";
     }
 }
