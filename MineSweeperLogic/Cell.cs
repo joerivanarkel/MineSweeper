@@ -27,6 +27,9 @@ public class Cell
 
     public void RightClick()
     {
-        CellState = CellState.Flagged;
+        if(CellState != CellState.Flagged)
+            CellState = CellState.Flagged;
+        else
+            CellState = CellState.Hidden;
     }
 }

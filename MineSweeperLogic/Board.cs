@@ -160,7 +160,10 @@ public class Board
     public void RightClicked(int x, int y)
     {
         var foundCell = Cells[x, y];
-        if (foundCell.CellState == CellState.Revealed){ return; }
+        if (foundCell.CellState == CellState.Revealed)
+        { 
+            return; 
+        }
         Cells[x, y].RightClick();
     }
 

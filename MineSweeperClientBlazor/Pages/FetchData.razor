@@ -75,6 +75,7 @@
     }
     .row{
         display: inline-flex;
+        padding:3px;
     }
 </style>
 
@@ -95,7 +96,7 @@
 
                 <div class="col cell">
 
-                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.z, identifier.i))"/>
+                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.z, identifier.i))" oncontextmenu="@(() =>btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault="true"/>
                     @* <div class="@cell.CellState.ToString() @cell.MineState.ToString()">
                         <i class="bi bi-1-circle "></i>
                     </div> *@
@@ -112,40 +113,23 @@
 
 
 @code {
-    public int Width { get; set; } = 30;
-    public int Height { get; set; } = 16;
-    public int MineCount { get; set; } = 99;
+    public int Width { get; set; } = 10;
+    public int Height { get; set; } = 10;
+    public int MineCount { get; set; } = 5;
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
-    public bool Flagging { get; set; }
 
     public void btnClick(int z, int i)
     {
         Console.WriteLine( $"found value z: { z } found value i : { i}");
-        if (Flagging == false)
-        {
-            Game.LeftClicked(z, i);
-        }
-        if (Flagging == true)
-        {
-            Game.RightClicked(z, i);
-        }
-
+        Game.LeftClicked(z, i);
         this.StateHasChanged();
     }
 
-    public void CheckboxClicked()
+    public void btnRightClick(int z, int i)
     {
-        if (Flagging == true)
-        {
-            Flagging = false;
-            return;
-        }
-        if (Flagging == false)
-        {
-            Flagging = true;
-            return;
-        }
+        Game.RightClicked(z, i);
+        this.StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
