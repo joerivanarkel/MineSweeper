@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata"
 @using MineSweeperLogic
+@inject NavigationManager _navigationManager
 
 <style>
     .Playing
@@ -116,11 +117,13 @@
 <div class="@Game.GameState.ToString()">
     @if (Game.GameState == GameState.Lost)
     {
-        <h1>You loose!</h1>
+        <h1>You loose!</h1>                 
+        <input type="button" @onclick="(() => Reset())" value="Reset">
     }
     @if (Game.GameState == GameState.Win)
     {
         <h1>You win!</h1>
+        <input type="button" @onclick="(() => Reset())" value="Reset">
     }
 </div>
 
@@ -131,7 +134,7 @@
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
 
-    public void btnClick(int z, int i, Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
+    public void btnClick(int z, int i, MouseEventArgs args)
     {
         Console.WriteLine( $"found value z: { z } found value i : { i}");
         var value = args.Button.ToString();
@@ -156,7 +159,12 @@
 
     public void btnRightClick(int z, int i)
     {
+        
+    }
 
+    public void Reset()
+    {
+        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
     }
 
     protected override async Task OnInitializedAsync()
