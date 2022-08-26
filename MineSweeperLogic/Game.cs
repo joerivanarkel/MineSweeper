@@ -23,6 +23,11 @@ public class Game
         Board.RightClicked(x,y);
     }
 
+    public void MiddleClicked(int x, int y)
+    {
+        Board.MiddleClicked(x, y);
+    }
+
     public void MineClicked(object? sender, EventArgs e)
     {
         GameState = GameState.Lost;

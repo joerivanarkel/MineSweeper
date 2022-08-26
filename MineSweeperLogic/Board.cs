@@ -35,6 +35,63 @@ public class Board
         DetermineMineBorders();
     }
 
+    public void MiddleClicked(int x, int y)
+    {
+        try
+        {
+            var clickedCell = Cells[x, y];
+            if(clickedCell.CellState != CellState.Revealed) { return; }
+            if(clickedCell.CellState == CellState.Flagged) { return; }
+
+            var maxX = Cells.GetLength(0) -1;
+            var maxY = Cells.GetLength(1) -1;
+
+            var startX = x - 1 <= 0 ? 0 : x - 1;
+            var endX = x + 1 >= maxX ? maxX : x + 1;
+
+            var countedFlags = 0;
+
+            for (int i = startX; i <= endX; i++)
+            {
+                var startY = y - 1 <= 0 ? 0 : y - 1;
+                var endY = y + 1 >= maxY ? maxY : y + 1;
+                for (int z = startY; z <= endY; z++)
+                {
+                    var foundCell = Cells[i, z];
+                    if (foundCell.CellState == CellState.Flagged)
+                    {
+                        countedFlags++;
+                    }
+                }
+            }
+
+            if (countedFlags == clickedCell.Value)
+            {
+                for (int i = startX; i <= endX; i++)
+                {
+                    var startY = y - 1 <= 0 ? 0 : y - 1;
+                    var endY = y + 1 >= maxY ? maxY : y + 1;
+                    for (int z = startY; z <= endY; z++)
+                    {
+                        var foundCell = Cells[i, z];
+                        if (foundCell.CellState != CellState.Revealed && foundCell.CellState != CellState.Flagged)
+                        {
+                            foundCell.LeftClick();
+                            if (foundCell.MineState == MineState.Empty)
+                            {
+                                ChainReveal(i, z);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine( exception.ToString());
+        }
+    }
+
     public void DetermineMineBorders()
     {
         try

@@ -90,7 +90,7 @@
     }
 </style>
 
-<div class="container @Game.GameState.ToString() ">
+<div class="container @Game.GameState.ToString()" @oncontextmenu:preventDefault @onmousedown:preventDefault>
 
     @for (int i = (Height -1); i >= 0; i--)
     {
@@ -106,9 +106,7 @@
                 var cell = Game.Board.Cells[z, i];
 
                 <div class="col cell">
-
-                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.z, identifier.i))" oncontextmenu="@(() =>btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault="true"/>
-
+                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" @onmousedown="(args => btnClick(identifier.z, identifier.i, args))" @oncontextmenu="(args => btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault @onmousedown:preventDefault/>
                 </div>
             }
         </div><br>
@@ -133,18 +131,32 @@
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
 
-    public void btnClick(int z, int i)
+    public void btnClick(int z, int i, Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
     {
         Console.WriteLine( $"found value z: { z } found value i : { i}");
-        Game.LeftClicked(z, i);
-        Game.WinCheck();
-        this.StateHasChanged();
+        var value = args.Button.ToString();
+        Console.WriteLine(value);
+        if (args.Button == 0)
+        {
+            Game.LeftClicked(z, i);
+            Game.WinCheck();
+            this.StateHasChanged();
+        }
+        if (args.Button == 1)
+        {
+            Game.MiddleClicked(z, i);
+            this.StateHasChanged();
+        }
+        if (args.Button == 2)
+        {
+            Game.RightClicked(z, i);
+            this.StateHasChanged();
+        }
     }
 
     public void btnRightClick(int z, int i)
     {
-        Game.RightClicked(z, i);
-        this.StateHasChanged();
+
     }
 
     protected override async Task OnInitializedAsync()
