@@ -84,10 +84,11 @@
     .col.cell{
         width: 50px;
         height: 50px;
+        margin: 3px;
     }
     .row{
-        display: inline-flex;
-        padding:3px;
+        display: inline-flex; 
+        /*padding:3px;*/
     }
 </style>
 
@@ -128,8 +129,8 @@
 </div>
 
 @code {
-    public int Width { get; set; } = 10;
-    public int Height { get; set; } = 10;
+    public int Width { get; set; } = 20;
+    public int Height { get; set; } = 20;
     public int MineCount { get; set; } = 5;
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
@@ -170,7 +171,7 @@
     protected override async Task OnInitializedAsync()
     {
         Game = new Game(Width, Height, MineCount);
-        var RowWidth = Width * 52;
+        var RowWidth = Width * 56;
         RowWidthInput = $"{RowWidth.ToString()}px";
     }
 }
