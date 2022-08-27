@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata"
 @using MineSweeperLogic
+@inject NavigationManager _navigationManager
 
 <style>
     .Playing
@@ -90,7 +91,7 @@
     }
 </style>
 
-<div class="container @Game.GameState.ToString() ">
+<div class="container @Game.GameState.ToString()" @oncontextmenu:preventDefault @onmousedown:preventDefault>
 
     @for (int i = (Height -1); i >= 0; i--)
     {
@@ -106,9 +107,7 @@
                 var cell = Game.Board.Cells[z, i];
 
                 <div class="col cell">
-
-                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" onclick="@(() => btnClick(identifier.z, identifier.i))" oncontextmenu="@(() =>btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault="true"/>
-
+                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" @onmousedown="(args => btnClick(identifier.z, identifier.i, args))" @oncontextmenu="(args => btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault @onmousedown:preventDefault/>
                 </div>
             }
         </div><br>
@@ -118,11 +117,13 @@
 <div class="@Game.GameState.ToString()">
     @if (Game.GameState == GameState.Lost)
     {
-        <h1>You loose!</h1>
+        <h1>You loose!</h1>                 
+        <input type="button" @onclick="(() => Reset())" value="Reset">
     }
     @if (Game.GameState == GameState.Win)
     {
         <h1>You win!</h1>
+        <input type="button" @onclick="(() => Reset())" value="Reset">
     }
 </div>
 
@@ -133,18 +134,37 @@
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
 
-    public void btnClick(int z, int i)
+    public void btnClick(int z, int i, MouseEventArgs args)
     {
         Console.WriteLine( $"found value z: { z } found value i : { i}");
-        Game.LeftClicked(z, i);
-        Game.WinCheck();
-        this.StateHasChanged();
+        var value = args.Button.ToString();
+        Console.WriteLine(value);
+        if (args.Button == 0)
+        {
+            Game.LeftClicked(z, i);
+            Game.WinCheck();
+            this.StateHasChanged();
+        }
+        if (args.Button == 1)
+        {
+            Game.MiddleClicked(z, i);
+            this.StateHasChanged();
+        }
+        if (args.Button == 2)
+        {
+            Game.RightClicked(z, i);
+            this.StateHasChanged();
+        }
     }
 
     public void btnRightClick(int z, int i)
     {
-        Game.RightClicked(z, i);
-        this.StateHasChanged();
+        
+    }
+
+    public void Reset()
+    {
+        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
     }
 
     protected override async Task OnInitializedAsync()
