@@ -3,7 +3,7 @@ public class Board
 {
     private int Width { get; set; }
     private int Height { get; set; }
-    private int MineCount { get; set; }
+    public int MineCount { get; private set; }
     public Cell[,] Cells { get; set; }
     private List<Mine> Mines { get; set; } = new List<Mine>();
 
@@ -11,7 +11,8 @@ public class Board
 
     public Board(int width, int height, int mineCount)
     {
-        DetermineMineCells(mineCount, width, height);
+        MineCount = mineCount;
+        DetermineMineCells(width, height);
         Cells = new Cell[width, height];
         Width = width;
         Height = height;
@@ -204,17 +205,21 @@ public class Board
         { 
             return; 
         }
+        // tva decrement the MineCount?
+        MineCount -=1;
+        //
         Cells[x, y].RightClick();
     }
 
     public void MineClicked(object? sender, EventArgs e)
     {
+        MineCount -= 1;
         BoardMineClickedEvent.Invoke(sender, e);
     }
 
-    private void DetermineMineCells(int mineCount, int width, int height)
+    private void DetermineMineCells(int width, int height)
     {
-        for (int i = 0; i < mineCount; i++)
+        for (int i = 0; i < MineCount; i++)
         {
             var x = new Random().Next(width);
             var y = new Random().Next(height);

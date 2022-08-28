@@ -1,6 +1,8 @@
 ﻿@page "/fetchdata"
+@using MineSweeperClientBlazor.Components
 @using MineSweeperLogic
 @inject NavigationManager _navigationManager
+@inject Game Game
 
 <style>
     .Playing
@@ -17,6 +19,9 @@
         transform: translate(-50%, -50%);
         background-color: white;
         border: solid 1px gray;
+        width: 200px;
+        height: 200px;
+        padding: 10px;
     }
     .Lost   
     {
@@ -28,10 +33,9 @@
         transform: translate(-50%, -50%);
         background-color: white;
         border: solid 1px gray;
-    }
-    .Lost h1
-    {
-        margin: 100px;
+        width: 200px;
+        height: 200px;
+        padding: 10px;
     }
     .container.Playing
     {
@@ -41,7 +45,10 @@
     {
         opacity: 0.2;
     }
-
+    .container.Win
+    {
+        opacity: 0.2;
+    }
 
     .Revealed{
         width: 50px;
@@ -88,11 +95,16 @@
     }
     .row{
         display: inline-flex; 
-        /*padding:3px;*/
     }
 </style>
+    <div class="container text-center">
+        <div class="row">
+            <MineCounter AmountOfMinesLeft=@Game.Board.MineCount/>
+            <Timer Game=@Game/>
+        </div>
 
-<div class="container @Game.GameState.ToString()" @oncontextmenu:preventDefault @onmousedown:preventDefault>
+    </div>
+    <div class="container text-center" @oncontextmenu:preventDefault @onmousedown:preventDefault>
 
     @for (int i = (Height -1); i >= 0; i--)
     {
@@ -129,11 +141,11 @@
 </div>
 
 @code {
-    public int Width { get; set; } = 20;
-    public int Height { get; set; } = 20;
+    public int Width { get; set; } = 30;
+    public int Height { get; set; } = 15;
     public int MineCount { get; set; } = 5;
     public string RowWidthInput { get; set; }
-    public Game Game { get; set; }
+    //public Game Game { get; set; }
 
     public void btnClick(int z, int i, MouseEventArgs args)
     {

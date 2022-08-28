@@ -3,14 +3,20 @@
 <PageTitle>MineSweeperClientBlazor</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
+            <ul class="nav justify-content-center nav-pills">
+            <li class="nav-item">
+            <a class="nav-link active" href="fetchdata">MineSweeper</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="heightandwidth">Height & Width</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="amountOfMines">Amount of Mines</a>
+            </li>
+            </ul>
 
         <article class="content px-4">
             @Body

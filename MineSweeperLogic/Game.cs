@@ -1,26 +1,55 @@
+using System.Diagnostics;
 using System.Linq;
 
 namespace MineSweeperLogic;
 
-public class Game
+public interface IGame
 {
-    public Board Board { get; set; }
-    public GameState GameState {get; set;} = GameState.Playing;
+    Stopwatch Stopwatch { get; set; }
+    Board Board { get; set; }
+    GameState GameState { get; set; }
+    public int Width { get; set; }
 
-    public Game(int width, int height, int mineCount)
+    public int Heigth { get; set; }
+
+    public int MineCount { get; set; }
+
+    void LeftClicked(int x, int y);
+    void MiddleClicked(int x, int y);
+    void MineClicked(object? sender, EventArgs e);
+    void RightClicked(int x, int y);
+    void WinCheck();
+}
+
+public class Game : IGame
+{
+        public int Width { get; set; }
+
+    public int Heigth { get; set; }
+
+    public int MineCount { get; set; }
+    public Stopwatch Stopwatch { get; set; } = new Stopwatch();
+
+    public Board Board { get; set; }
+    public GameState GameState { get; set; } = GameState.Playing;
+
+    public Game()
     {
-        Board = new Board(width, height, mineCount);
-        Board.BoardMineClickedEvent+= MineClicked;
+        Board = new Board(Width, Heigth, MineCount);
+        Board.BoardMineClickedEvent += MineClicked;
+        Stopwatch.Start();
     }
+
+
 
     public void LeftClicked(int x, int y)
     {
         Board.LeftClicked(x, y);
     }
-    
+
     public void RightClicked(int x, int y)
     {
-        Board.RightClicked(x,y);
+        Board.RightClicked(x, y);
     }
 
     public void MiddleClicked(int x, int y)
@@ -31,20 +60,25 @@ public class Game
     public void MineClicked(object? sender, EventArgs e)
     {
         GameState = GameState.Lost;
+        Stopwatch.Stop();
     }
 
     public void WinCheck()
     {
-        if(CheckCells())
+        if (CheckCells())
+        {
             GameState = GameState.Win;
+            Stopwatch.Stop();
+        }
+
     }
 
     private bool CheckCells()
     {
         var foundCells = from Cell cell in Board.Cells
-                        where (cell.CellState == CellState.Flagged || cell.CellState == CellState.Hidden) 
-                        && cell.MineState != MineState.Mine
-                        select cell;
+                         where (cell.CellState == CellState.Flagged || cell.CellState == CellState.Hidden)
+                         && cell.MineState != MineState.Mine
+                         select cell;
         return foundCells.Count() == 0;
     }
 }
