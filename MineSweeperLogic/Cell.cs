@@ -35,29 +35,26 @@ public class Cell
 
     public string GetImageName()
     {
-        if (CellState == CellState.Hidden)
+        switch (CellState)
         {
-            return "/Images/Hidden.png";
+            case CellState.Hidden:
+                return "/Images/Hidden.png";
+            case CellState.Flagged:
+                return "/Images/Flagged.png";
+            case CellState.Revealed:
+                switch (MineState)
+                {
+                    case MineState.Mine:
+                        return "/Images/Mine.png";
+                    case MineState.Empty:
+                        return "/Images/Revealed.png";
+                    case MineState.BordersMine:
+                        return $"/Images/{Value}.png";
+                    default:
+                        return "/Images/MineUnclicked.png";
+                }
+            default:
+                return "/Images/MineUnclicked.png";
         }
-        if (CellState == CellState.Flagged)
-        {
-            return "/Images/Flagged.png";
-        }
-        if (CellState == CellState.Revealed)
-        {
-            if (MineState == MineState.Mine)
-            {
-                return "/Images/Mine.png";
-            }
-            if (MineState == MineState.Empty)
-            {
-                return "/Images/Revealed.png";
-            }
-            if (MineState == MineState.BordersMine)
-            {
-                return $"/Images/{Value}.png";
-            }
-        }
-        return "/Images/MineUnclicked.png"; 
     }
 }
