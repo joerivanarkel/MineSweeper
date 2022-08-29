@@ -8,11 +8,6 @@ public interface IGame
     Stopwatch Stopwatch { get; set; }
     Board Board { get; set; }
     GameState GameState { get; set; }
-    public int Width { get; set; }
-
-    public int Heigth { get; set; }
-
-    public int MineCount { get; set; }
 
     void LeftClicked(int x, int y);
     void MiddleClicked(int x, int y);
@@ -23,24 +18,18 @@ public interface IGame
 
 public class Game : IGame
 {
-        public int Width { get; set; }
-
-    public int Heigth { get; set; }
-
-    public int MineCount { get; set; }
     public Stopwatch Stopwatch { get; set; } = new Stopwatch();
 
     public Board Board { get; set; }
     public GameState GameState { get; set; } = GameState.Playing;
 
-    public Game()
+    public Game(int Width, int Height, int MineCount)
     {
-        Board = new Board(Width, Heigth, MineCount);
+        Board = new Board(Width, Height, MineCount);
         Board.BoardMineClickedEvent += MineClicked;
         Stopwatch.Start();
     }
-
-
+    
 
     public void LeftClicked(int x, int y)
     {

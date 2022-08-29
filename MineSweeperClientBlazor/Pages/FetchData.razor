@@ -2,7 +2,6 @@
 @using MineSweeperClientBlazor.Components
 @using MineSweeperLogic
 @inject NavigationManager _navigationManager
-@inject Game Game
 
 <style>
     .Playing
@@ -145,7 +144,7 @@
     public int Height { get; set; } = 15;
     public int MineCount { get; set; } = 5;
     public string RowWidthInput { get; set; }
-    //public Game Game { get; set; }
+    public Game Game { get; set; }
 
     public void btnClick(int z, int i, MouseEventArgs args)
     {
@@ -156,7 +155,7 @@
         {
             Game.LeftClicked(z, i);
             Game.WinCheck();
-            this.StateHasChanged();
+            this.StateHasChanged(); 
         }
         if (args.Button == 1)
         {
