@@ -53,12 +53,10 @@
         width: 50px;
         height: 50px;
         background-color: white;
-        border-color: white;
     }
 
     input.Revealed.Empty
     {
-        border: solid 1px white;
         font-size:0
     }
     input.Revealed.BordersMine {
@@ -66,34 +64,30 @@
         height: 50px;
         background-color: white;
         background-image: ;
-        border: solid 1px white;
     }
     input.Hidden{
         width: 50px;
         height: 50px;
         background-color: lightgray;
-        border: solid 1px gray;
         font-size:0
     }
     .Flagged{
         width: 50px;
         height: 50px;
-        background-color:red;
-        border: solid 1px gray;
+        border: 0px;
         font-size:0
     }
     .Revealed.Mine{
         width: 50px;
         height: 50px;
-        background-color:red;
     }
     .col.cell{
         width: 50px;
         height: 50px;
-        margin: 3px;
     }
     .row{
         display: inline-flex; 
+        padding: 0
     }
 </style>
     <div class="container text-center">
@@ -101,13 +95,13 @@
             <MineCounter AmountOfMinesLeft=@Game.Board.MineCount/>
             <Timer Game=@Game/>
         </div>
-
     </div>
-    <div class="container text-center" @oncontextmenu:preventDefault @onmousedown:preventDefault>
+
+<div class="row text-center" @oncontextmenu:preventDefault @onmousedown:preventDefault>
 
     @for (int i = (Height -1); i >= 0; i--)
     {
-        <div class="row">
+        <div class="row ">
         <style>
             .row{
                 width: @RowWidthInput;
@@ -117,9 +111,8 @@
             {
                 var identifier = new {z, i};
                 var cell = Game.Board.Cells[z, i];
-
                 <div class="col cell">
-                    <input type="button" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" @onmousedown="(args => btnClick(identifier.z, identifier.i, args))" @oncontextmenu="(args => btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault @onmousedown:preventDefault/>
+                    <input type="image" src="@cell.GetImageName()" id="@i, @z" value="@cell.Value" class="@cell.CellState.ToString() @cell.MineState.ToString()" @onmousedown="(args => btnClick(identifier.z, identifier.i, args))" @oncontextmenu="(args => btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault @onmousedown:preventDefault/>
                 </div>
             }
         </div><br>
@@ -141,8 +134,8 @@
 
 @code {
     public int Width { get; set; } = 30;
-    public int Height { get; set; } = 15;
-    public int MineCount { get; set; } = 5;
+    public int Height { get; set; } = 16;
+    public int MineCount { get; set; } = 99;
     public string RowWidthInput { get; set; }
     public Game Game { get; set; }
 
@@ -183,7 +176,12 @@
     protected override async Task OnInitializedAsync()
     {
         Game = new Game(Width, Height, MineCount);
-        var RowWidth = Width * 56;
+        var RowWidth = Width * 50;
         RowWidthInput = $"{RowWidth.ToString()}px";
+    }
+
+    public string GetImageName()
+    {
+        return "One";
     }
 }
