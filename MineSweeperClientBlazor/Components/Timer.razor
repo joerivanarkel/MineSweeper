@@ -3,15 +3,15 @@
 @using MineSweeperLogic
 @using System.Threading
 
-<div class="AmountOfMines ">
-    <div class="AmountOfMinesNumber blink">
+<div class="AmountOfMinesTime ">
+    <div class="AmountOfMinesNumber">
         @(Game.Stopwatch.ElapsedMilliseconds / 1000)
     </div>
 </div>
 
 @code {
     [Parameter]
-    public Game Game { get; set; }
+    public IGame Game { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

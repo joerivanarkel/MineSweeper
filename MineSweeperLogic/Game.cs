@@ -1,31 +1,31 @@
 using System.Diagnostics;
-using System.Linq;
 
 namespace MineSweeperLogic;
-
-public interface IGame
-{
-    Stopwatch Stopwatch { get; set; }
-    Board Board { get; set; }
-    GameState GameState { get; set; }
-
-    void LeftClicked(int x, int y);
-    void MiddleClicked(int x, int y);
-    void MineClicked(object? sender, EventArgs e);
-    void RightClicked(int x, int y);
-    void WinCheck();
-}
 
 public class Game : IGame
 {
     public Stopwatch Stopwatch { get; set; } = new Stopwatch();
 
     public Board Board { get; set; }
+
     public GameState GameState { get; set; } = GameState.Playing;
 
-    public Game(int Width, int Height, int MineCount)
+    public int Height { get; set; } = 50;
+
+    public int Width { get; set; } = 20;
+
+    public int AmountOfMines { get; set; }= 10;
+
+
+
+    public Game(){    
+    }
+
+    public void Start()
     {
-        Board = new Board(Width, Height, MineCount);
+        GameState = GameState.Playing;
+        Stopwatch = new Stopwatch();
+        Board = new Board(Width, Height, AmountOfMines);
         Board.BoardMineClickedEvent += MineClicked;
         Stopwatch.Start();
     }
