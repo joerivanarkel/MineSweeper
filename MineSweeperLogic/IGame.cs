@@ -7,11 +7,14 @@ public interface IGame
     Stopwatch Stopwatch { get; set; }
     Board Board { get; set; }
     GameState GameState { get; set; }
-    public int Height { get; set; }
+    int Height { get; set; }
 
-    public int Width { get; set; }
+    int Width { get; set; }
 
-    public int AmountOfMines { get; set; }
+    int AmountOfMines { get; set; }
+
+    MineSweeperLogic.ILogger Logger {get;set;}
+
 
 
     void Start();
