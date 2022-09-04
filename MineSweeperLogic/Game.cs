@@ -16,13 +16,18 @@ public class Game : IGame
 
     public int AmountOfMines { get; set; }= 10;
 
+    public MineSweeperLogic.ILogger Logger {get;set;}
 
 
-    public Game(){    
+
+    public Game(ILogger logger)
+    {    
+        Logger = logger;
     }
 
     public void Start()
     {
+        Logger = new Logger();
         GameState = GameState.Playing;
         Stopwatch = new Stopwatch();
         Board = new Board(Width, Height, AmountOfMines);
@@ -33,21 +38,26 @@ public class Game : IGame
 
     public void LeftClicked(int x, int y)
     {
+        
+        Logger.Log($"you left clicked point({x}, {y}), after { Stopwatch.Elapsed.Seconds.ToString()}");
         Board.LeftClicked(x, y);
     }
 
     public void RightClicked(int x, int y)
     {
+        Logger.Log($"you right clicked point({x}, {y}), after { Stopwatch.Elapsed.Seconds.ToString()}");
         Board.RightClicked(x, y);
     }
 
     public void MiddleClicked(int x, int y)
     {
+        Logger.Log($"you middle clicked clicked point({x}, {y}), after { Stopwatch.Elapsed.Seconds.ToString()}");
         Board.MiddleClicked(x, y);
     }
 
     public void MineClicked(object? sender, EventArgs e)
     {
+        Logger.Log($"Bummer!....you clicked on a Mine!, after { Stopwatch.Elapsed.Seconds.ToString()}");
         GameState = GameState.Lost;
         Stopwatch.Stop();
     }
@@ -56,6 +66,7 @@ public class Game : IGame
     {
         if (CheckCells())
         {
+            Logger.Log($"You won the Game!!, after { Stopwatch.Elapsed.Seconds.ToString()}");
             GameState = GameState.Win;
             Stopwatch.Stop();
         }

@@ -1,0 +1,42 @@
+@page "/logger"
+
+@using MineSweeperLogic
+
+<style>
+    .logger
+    {
+        font-family: monospace;
+        text-align: left;
+        font-size: 10px;
+        background-color: black;
+        color: white;
+        margin-top:30px;
+    }
+    .logger p
+    {
+        margin: 10px;
+    }
+</style>
+
+<div class="logger" id="collapseExample">
+@foreach (var log in Logs.OrderByDescending( a=>a.DateAndTime))
+{
+    <p>@log.Message</p>
+}
+</div>
+@code {
+    [Parameter]
+    public List<Log> Logs { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+         var timer = new System.Threading.Timer(new TimerCallback(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        }), null, 1000, 1000); 
+
+    }
+}
