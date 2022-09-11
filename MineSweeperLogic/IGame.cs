@@ -15,14 +15,17 @@ public interface IGame
 
     MineSweeperLogic.ILogger Logger {get;set;}
 
+    string UserName { get; set; }
 
+     List<( string UserName,int Score)> HighScore { get; set; } 
 
     void Start();
     void LeftClicked(int x, int y);
     void MiddleClicked(int x, int y);
     void MineClicked(object? sender, EventArgs e);
     void RightClicked(int x, int y);
-    void WinCheck();
+    void WinCheck(int x, int y);
+    void SaveScore();
 }
 
 

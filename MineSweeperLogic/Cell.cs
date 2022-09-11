@@ -5,8 +5,14 @@ public class Cell
     public CellState CellState { get; set; }
     public MineState MineState{get; set;}
     public event EventHandler? MineClicked;
-
     public int Value { get; set; } 
+
+    private readonly ILogger _logger;
+
+    public Cell(ILogger logger)
+    {
+        _logger = logger;
+    }
 
     public void LeftClick()
     {
@@ -22,7 +28,10 @@ public class Cell
     public void Reveal()
     {
         if (MineState != MineState.Mine)
+        {
             CellState = CellState.Revealed;
+        }
+
     }
 
     public void RightClick()

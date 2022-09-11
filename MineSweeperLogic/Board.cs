@@ -9,7 +9,7 @@ public class Board
 
     public event EventHandler BoardMineClickedEvent;
 
-    public Board(int width, int height, int mineCount)
+    public Board(int width, int height, int mineCount, ILogger logger)
     {
         MineCount = mineCount;
         DetermineMineCells(width, height);
@@ -28,7 +28,7 @@ public class Board
                     mineState = MineState.Mine;
                 }
 
-                var cell = new Cell() { MineState = mineState };
+                var cell = new Cell(logger) { MineState = mineState };
                 cell.MineClicked += MineClicked;
                 Cells[x, y] = cell;
             }

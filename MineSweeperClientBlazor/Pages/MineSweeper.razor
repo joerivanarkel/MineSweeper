@@ -3,6 +3,7 @@
 @using MineSweeperLogic
 @inject NavigationManager _navigationManager
 @inject IGame _game
+@inject ILogger _logger
 
 <style>
     .Playing {
@@ -21,6 +22,7 @@
         width: 200px;
         height: 200px;
         padding: 10px;
+        text-align: center;
     }
 
     .Lost {
@@ -35,6 +37,7 @@
         width: 200px;
         height: 200px;
         padding: 10px;
+        text-align: center;
     }
 
     .container.Playing {
@@ -133,19 +136,21 @@
     @if (_game.GameState == GameState.Lost)
     {
         <h1>You loose!</h1>
-        <input type="button" @onclick="(() => Reset())" value="Reset">
+        <p>You made <strong>@_logger.ClickCount</strong>  moves in <strong>@_logger.Seconds</strong>  seconds</p>
+        <button type="button" @onclick="(() => Reset())" >Reset</button>
     }
     @if (_game.GameState == GameState.Win)
     {
         <h1>You win!</h1>
-        <input type="button" @onclick="(() => Reset())" value="Reset">
+        <p>You made <strong>@_logger.ClickCount</strong>  moves in <strong>@_logger.Seconds</strong>  seconds</p>
+        <button type="button" @onclick="(() => SaveScore())" >Save score</button>
+        <button type="button" @onclick="(() => Reset())" >Reset</button>
     }
 </div>
 
 <div class="container text-center">
     <div class="row">
         <MineSweeperClientBlazor.Components.Logger Logs=@_game.Logger.Logs />
-        @* <logger Logs=_game.Logger.Logs /> *@
     </div>
 </div>
 
@@ -162,13 +167,13 @@
         if (args.Button == 0)
         {
             _game.LeftClicked(z, i);
-            _game.WinCheck();
+            _game.WinCheck(z, i);
             this.StateHasChanged();
         }
         if (args.Button == 1)
         {
             _game.MiddleClicked(z, i);
-            _game.WinCheck();
+            _game.WinCheck(z,i);
             this.StateHasChanged();
         }
         if (args.Button == 2)
@@ -187,6 +192,11 @@
     {
         _game.Start();
         _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
+    }
+
+    public void SaveScore()
+    {
+        _navigationManager.NavigateTo("score", false);
     }
 
     protected override async Task OnInitializedAsync()

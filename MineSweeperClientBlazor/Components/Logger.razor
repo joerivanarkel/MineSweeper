@@ -12,21 +12,53 @@
         color: white;
         margin-top:30px;
     }
+    .logger table
+    {
+        font-family: monospace;
+        text-align: left;
+        font-size: 10px;
+        background-color: black;
+        color: white;
+        margin-top:30px;
+    }
     .logger p
     {
         margin: 10px;
     }
 </style>
 
-<div class="logger" id="collapseExample">
-@foreach (var log in Logs.OrderByDescending( a=>a.DateAndTime))
-{
-    <p>@log.Message</p>
-}
+<div class="logger" id="collapseExample" hidden=@Hidden() >
+    <table class="table table-bordered ">
+        <tr>
+            <th>Coordinate</th>
+            <th>Message</th>
+            <th>Elapsed seconds</th>
+        </tr>
+        @foreach (var log in Logs.OrderByDescending( a=>a.DateAndTime))
+        {
+            <tr>
+                <td>
+                    @log.Coordinate.ToString()
+                </td>
+                <td>
+                    @log.Message
+                </td>
+                <td>
+                    @log.Seconds
+                </td>
+            </tr>
+        }
+    </table>
 </div>
+
 @code {
     [Parameter]
     public List<Log> Logs { get; set; }
+
+    public bool Hidden()
+    {
+        return Logs.Count == 0;
+    }
 
     protected override async Task OnInitializedAsync()
     {
