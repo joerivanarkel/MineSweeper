@@ -1,0 +1,85 @@
+::deep .Playing {
+    visibility: hidden;
+}
+
+::deep .Win {
+    visibility: visible;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: solid 1px gray;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    text-align: center;
+}
+
+::deep .Lost {
+    visibility: visible;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: solid 1px gray;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    text-align: center;
+}
+
+::deep .container.Playing {
+    visibility: visible;
+}
+
+::deep .container.Lost {
+    opacity: 0.2;
+}
+
+::deep .container.Win {
+    opacity: 0.2;
+}
+
+::deep .Revealed {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+}
+
+::deep input.Revealed.Empty {
+    font-size: 0;
+}
+
+::deep input.Revealed.BordersMine {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+}
+
+::deep input.Hidden {
+    width: 50px;
+    height: 50px;
+    background-color: lightgray;
+    font-size: 0;
+}
+
+::deep .Flagged {
+    width: 50px;
+    height: 50px;
+    border: 0px;
+    font-size: 0;
+}
+
+::deep .Revealed.Mine {
+    width: 50px;
+    height: 50px;
+}
+
+::deep .col.cell {
+    width: 50px;
+    height: 50px;
+}

@@ -1,0 +1,13 @@
+.AmountOfMinesTime {
+    padding: 20px;
+    margin-left: 2px;
+    width: 160px;
+    height: 80px;
+    border: solid 1px gray;
+}
+
+.AmountOfMinesNumber {
+    font-size: 40px;
+    font-weight: bolder;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

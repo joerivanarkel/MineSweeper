@@ -1,0 +1,25 @@
+@using MineSweeperLogic
+@using System.Threading
+
+<div class="AmountOfMinesTime">
+    <div class="AmountOfMinesNumber">
+        @(Game.Stopwatch.ElapsedMilliseconds / 1000)
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IGame Game { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+         var timer = new System.Threading.Timer(new TimerCallback(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        }), null, 1000, 1000); 
+
+    }
+}

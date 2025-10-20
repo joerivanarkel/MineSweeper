@@ -1,0 +1,47 @@
+@using MineSweeperLogic
+
+<div class="logger" id="collapseExample" hidden=@Hidden()>
+    <table class="table table-bordered ">
+        <tr>
+            <th>Coordinate</th>
+            <th>Message</th>
+            <th>Elapsed seconds</th>
+        </tr>
+        @foreach (var log in Logs.OrderByDescending( a=>a.DateAndTime))
+        {
+            <tr>
+                <td>
+                    @log.Coordinate.ToString()
+                </td>
+                <td>
+                    @log.Message
+                </td>
+                <td>
+                    @log.Seconds
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public List<Log> Logs { get; set; }
+
+    public bool Hidden()
+    {
+        return Logs.Count == 0;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+         var timer = new System.Threading.Timer(new TimerCallback(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        }), null, 1000, 1000); 
+
+    }
+}
