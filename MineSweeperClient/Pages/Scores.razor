@@ -1,0 +1,72 @@
+@page "/scores"
+@using MineSweeperLogic
+@inject IGame Game
+@inject NavigationManager NavManager
+
+<PageTitle>High Scores</PageTitle>
+
+<div class="config-card">
+    <h2 class="text-center mb-4">
+        <span class="oi oi-star"></span> High Scores
+    </h2>
+
+    @if (Game.HighScore.Any())
+    {
+        <div class="table-responsive">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int rank = 1;
+                        var sortedScores = Game.HighScore
+                            .OrderByDescending(x => x.Score)
+                            .Take(10);
+
+                        foreach (var (userName, score) in sortedScores)
+                        {
+                            <tr>
+                                <td>
+                                    @if (rank == 1) { <span>🥇</span> }
+                                    else if (rank == 2) { <span>🥈</span> }
+                                    else if (rank == 3) { <span>🥉</span> }
+                                    else { <span>@rank</span> }
+                                </td>
+                                <td><strong>@userName</strong></td>
+                                <td>
+                                    <span class="badge bg-primary">@score</span>
+                                </td>
+                            </tr>
+                            rank++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="mb-3" style="font-size: 4rem;">🏆</div>
+            <p class="lead">No scores yet!</p>
+            <p class="text-muted">Be the first to complete a game and save your score.</p>
+        </div>
+    }
+
+    <div class="d-grid gap-2 mt-4">
+        <a href="minesweeper" class="btn btn-primary btn-lg">
+            <span class="oi oi-media-play"></span> Play Game
+        </a>
+        <a href="" class="btn btn-secondary btn-lg">
+            <span class="oi oi-home"></span> Home
+        </a>
+    </div>
+</div>
+
+@code {
+}

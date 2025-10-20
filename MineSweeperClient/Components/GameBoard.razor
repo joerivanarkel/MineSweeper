@@ -1,0 +1,35 @@
+@using MineSweeperLogic
+
+<div class="game-board-container">
+    <div class="row text-center" @oncontextmenu:preventDefault @onmousedown:preventDefault>
+        @for (int i = (Game.Height - 1); i >= 0; i--)
+        {
+            <div class="row g-0">
+                @for (int z = 0; z <= Game.Width - 1; z++)
+                {
+                    var identifier = new { z, i };
+                    var cell = Game.Board.Cells[z, i];
+                    <div class="col cell">
+                        <input type="image" src="@cell.GetImageName()" id="@i, @z" value="@cell.Value"
+                               class="@cell.CellState.ToString() @cell.MineState.ToString()"
+                               @onmousedown="(args => OnCellClick.InvokeAsync((identifier.z, identifier.i, args)))"
+                               @oncontextmenu="(args => OnCellRightClick.InvokeAsync((identifier.z, identifier.i)))" 
+                               @oncontextmenu:preventDefault
+                               @onmousedown:preventDefault />
+                    </div>
+                }
+            </div><br>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public IGame Game { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<(int x, int y, MouseEventArgs args)> OnCellClick { get; set; }
+
+    [Parameter]
+    public EventCallback<(int x, int y)> OnCellRightClick { get; set; }
+}

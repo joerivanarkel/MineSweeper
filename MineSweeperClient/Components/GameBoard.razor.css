@@ -1,0 +1,25 @@
+.game-board-container {
+    background: #bdc3c7;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.row {
+    display: flex;
+    line-height: 0;
+}
+
+.col {
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    flex: none;
+}
+
+.col input[type="image"] {
+    display: block;
+    margin: 0;
+    padding: 0;
+}

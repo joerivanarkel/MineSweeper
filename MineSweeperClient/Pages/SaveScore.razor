@@ -1,0 +1,89 @@
+@page "/savescore"
+@using MineSweeperLogic
+@inject IGame Game
+@inject ILogger Logger
+@inject NavigationManager NavManager
+
+<PageTitle>Save Your Score</PageTitle>
+
+<div class="config-card">
+    <h2 class="text-center mb-4">
+        <span class="icon-large celebration">🏆</span>
+    </h2>
+    <h3 class="text-center mb-4">Congratulations!</h3>
+    
+    <div class="stats-summary mb-4">
+        <div class="stat-item">
+            <span class="stat-label">Moves:</span>
+            <span class="stat-value">@Logger.ClickCount</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Time:</span>
+            <span class="stat-value">@Logger.Seconds s</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Score:</span>
+            <span class="stat-value">@CalculateScore()</span>
+        </div>
+    </div>
+
+    <EditForm Model="@this" OnValidSubmit="HandleSaveScore">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="text-danger" />
+
+        <div class="mb-3">
+            <label for="playerName" class="form-label">
+                <span class="oi oi-person"></span> Your Name:
+            </label>
+            <input type="text" class="form-control form-control-lg" id="playerName" 
+                   @bind="PlayerName" placeholder="Enter your name" maxlength="50" />
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success btn-lg">
+                <span class="oi oi-check"></span> Save Score
+            </button>
+            <button type="button" class="btn btn-primary btn-lg" @onclick="PlayAgain">
+                <span class="oi oi-reload"></span> Play Again
+            </button>
+            <a href="" class="btn btn-secondary btn-lg">
+                <span class="oi oi-home"></span> Home
+            </a>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private string PlayerName { get; set; } = string.Empty;
+
+    private int CalculateScore()
+    {
+        // Simple scoring: fewer moves and less time = higher score
+        return Math.Max(0, 10000 - (Logger.ClickCount * 10) - (Logger.Seconds * 5));
+    }
+
+    private void HandleSaveScore()
+    {
+        if (!string.IsNullOrWhiteSpace(PlayerName))
+        {
+            var score = CalculateScore();
+            Game.HighScore.Add((PlayerName.Trim(), score));
+            NavManager.NavigateTo("scores");
+        }
+    }
+
+    private void PlayAgain()
+    {
+        Game.Start();
+        NavManager.NavigateTo("minesweeper");
+    }
+
+    protected override void OnInitialized()
+    {
+        // Redirect if no game was won
+        if (Game.GameState != GameState.Win)
+        {
+            NavManager.NavigateTo("");
+        }
+    }
+}

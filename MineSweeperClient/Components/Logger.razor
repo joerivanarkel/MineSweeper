@@ -1,47 +1,60 @@
 @using MineSweeperLogic
 
-<div class="logger" id="collapseExample" hidden=@Hidden()>
-    <table class="table table-bordered ">
-        <tr>
-            <th>Coordinate</th>
-            <th>Message</th>
-            <th>Elapsed seconds</th>
-        </tr>
-        @foreach (var log in Logs.OrderByDescending( a=>a.DateAndTime))
+@if (!Hidden())
+{
+    <div class="logger-container">
+        <button class="btn btn-sm btn-outline-secondary mb-2" @onclick="ToggleLogger">
+            <span class="oi @(isExpanded ? "oi-chevron-top" : "oi-chevron-bottom")"></span>
+            @(isExpanded ? "Hide" : "Show") Game Log
+        </button>
+        
+        @if (isExpanded)
         {
-            <tr>
-                <td>
-                    @log.Coordinate.ToString()
-                </td>
-                <td>
-                    @log.Message
-                </td>
-                <td>
-                    @log.Seconds
-                </td>
-            </tr>
+            <div class="logger" id="collapseExample">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Coordinate</th>
+                        <th>Message</th>
+                        <th>Time (s)</th>
+                    </tr>
+                    @foreach (var log in Logs.OrderByDescending(a => a.DateAndTime))
+                    {
+                        <tr>
+                            <td>@log.Coordinate.ToString()</td>
+                            <td>@log.Message</td>
+                            <td>@log.Seconds</td>
+                        </tr>
+                    }
+                </table>
+            </div>
         }
-    </table>
-</div>
+    </div>
+}
 
 @code {
-    [Parameter]
-    public List<Log> Logs { get; set; }
+    [Parameter, EditorRequired]
+    public List<Log> Logs { get; set; } = default!;
+
+    private bool isExpanded = false;
 
     public bool Hidden()
     {
         return Logs.Count == 0;
     }
 
+    public void ToggleLogger()
+    {
+        isExpanded = !isExpanded;
+    }
+
     protected override async Task OnInitializedAsync()
     {
-         var timer = new System.Threading.Timer(new TimerCallback(_ =>
+        var timer = new System.Threading.Timer(new TimerCallback(_ =>
         {
             InvokeAsync(() =>
             {
                 StateHasChanged();
             });
-        }), null, 1000, 1000); 
-
+        }), null, 1000, 1000);
     }
 }

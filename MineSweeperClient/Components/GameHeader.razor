@@ -1,0 +1,19 @@
+@using MineSweeperLogic
+
+<div class="game-header">
+    <MineCounter AmountOfMinesLeft="@Game.Board.MineCount" />
+    <div>
+        <button class="btn btn-warning" @onclick="OnReset" title="New Game">
+            <span class="oi oi-reload"></span> New Game
+        </button>
+    </div>
+    <Timer Game="@Game" />
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public IGame Game { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnReset { get; set; }
+}

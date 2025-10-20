@@ -5,33 +5,56 @@
 @inject IGame _game
 @inject NavigationManager NavManager
 
-<div class="container text-center">
-    <h1>Set the height and width</h1>
-    <EditForm Model="@_game" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <p>
-            <label>
-                Height:
-                <InputNumber @bind-Value="_game.Height" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Width:
-                <InputNumber @bind-Value="_game.Width" />
-            </label>
-        </p>
+<PageTitle>Board Size - MineSweeper</PageTitle>
 
-        <button type="submit">Submit</button>
-    </EditForm>
-</div> 
+<div class="home-container">
+    <div class="config-card">
+        <h1 class="mb-4">
+            <span class="oi oi-resize-both"></span> Set Board Size
+        </h1>
+        <p class="text-muted mb-4">Choose the dimensions for your minefield</p>
+
+        <EditForm Model="@_game" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="alert alert-danger" />
+            
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                        <strong>Height (Rows)</strong>
+                    </label>
+                    <InputNumber @bind-Value="_game.Height" class="form-control form-control-lg" min="5" />
+                    <div class="form-text">Minimum: 5 rows</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                        <strong>Width (Columns)</strong>
+                    </label>
+                    <InputNumber @bind-Value="_game.Width" class="form-control form-control-lg" min="5" />
+                    <div class="form-text">Minimum: 5 columns</div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>💡 Board Preview:</strong> @_game.Height × @_game.Width = @(_game.Height * _game.Width) cells
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <span class="oi oi-arrow-right"></span> Continue to Mine Count
+                </button>
+                <a href="" class="btn btn-secondary">
+                    <span class="oi oi-arrow-left"></span> Back to Home
+                </a>
+            </div>
+        </EditForm>
+    </div>
+</div>
 
 @code {
 
     private void HandleValidSubmit()
     {
-        _game.Start();
-        NavManager.NavigateTo("/minesweeper");
+        NavManager.NavigateTo("amountOfMines");
     }
 }

@@ -1,0 +1,55 @@
+@inject NavigationManager NavManager
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="" @onclick="NavigateHome" @onclick:preventDefault>
+            <span style="font-size: 24px;">💣</span> MineSweeper
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="" @onclick="NavigateHome" @onclick:preventDefault>
+                        <span class="oi oi-home"></span> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="minesweeper" @onclick="NavigateToGame" @onclick:preventDefault>
+                        <span class="oi oi-flag"></span> Play
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="scores" @onclick="NavigateToScore" @onclick:preventDefault>
+                        <span class="oi oi-star"></span> Scores
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/vanarkel/MineSweeper" target="_blank">
+                        <span class="oi oi-code"></span> GitHub
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private void NavigateHome()
+    {
+        NavManager.NavigateTo("", false);
+    }
+
+    private void NavigateToGame()
+    {
+        NavManager.NavigateTo("minesweeper", false);
+    }
+
+    private void NavigateToScore()
+    {
+        NavManager.NavigateTo("scores", false);
+    }
+}

@@ -5,27 +5,75 @@
 @inject IGame _game
 @inject NavigationManager NavManager
 
-<div class="container text-center">
-    <h1>Set the amount of mines</h1>
-    <EditForm Model="@_game" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <p>
-            <label>
-                Amount:
-                <InputNumber @bind-Value="_game.AmountOfMines" />
-            </label>
-        </p>
+<PageTitle>Mine Count - MineSweeper</PageTitle>
 
-        <button type="submit">Submit</button>
-    </EditForm>
+<div class="home-container">
+    <div class="config-card">
+        <h1 class="mb-4">
+            <span class="oi oi-warning"></span> Set Mine Count
+        </h1>
+        <p class="text-muted mb-4">How many mines should be hidden on the board?</p>
+
+        <EditForm Model="@_game" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="alert alert-danger" />
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <strong>Number of Mines 💣</strong>
+                </label>
+                <InputNumber @bind-Value="_game.AmountOfMines" class="form-control form-control-lg" min="1" />
+                <div class="form-text">Minimum: 1 mine (Maximum: @MaxMines based on your board size)</div>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>⚠️ Difficulty Level:</strong>
+                <div class="mt-2">
+                    @if (_game.AmountOfMines < 15)
+                    {
+                        <span class="difficulty-badge badge-easy">EASY</span>
+                        <span class="ms-2">Great for beginners!</span>
+                    }
+                    else if (_game.AmountOfMines < 40)
+                    {
+                        <span class="difficulty-badge badge-medium">MEDIUM</span>
+                        <span class="ms-2">A good challenge!</span>
+                    }
+                    else
+                    {
+                        <span class="difficulty-badge badge-hard">HARD</span>
+                        <span class="ms-2">For experts only!</span>
+                    }
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <span class="oi oi-media-play"></span> Start Game
+                </button>
+                <a href="heightandwidth" class="btn btn-secondary">
+                    <span class="oi oi-arrow-left"></span> Back to Board Size
+                </a>
+                <a href="" class="btn btn-outline-secondary">
+                    <span class="oi oi-home"></span> Home
+                </a>
+            </div>
+        </EditForm>
+    </div>
 </div>
 
 @code {
+    private int MaxMines => (_game.Height * _game.Width) - 1;
 
     private void HandleValidSubmit()
     {
+        // Ensure mines don't exceed cells
+        if (_game.AmountOfMines >= _game.Height * _game.Width)
+        {
+            _game.AmountOfMines = MaxMines;
+        }
+        
         _game.Start();
-        NavManager.NavigateTo("/minesweeper");
+        NavManager.NavigateTo("minesweeper");
     }
 }

@@ -1,7 +1,23 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+:root {
+    --mine-primary: #2c3e50;
+    --mine-secondary: #34495e;
+    --mine-success: #27ae60;
+    --mine-danger: #e74c3c;
+    --mine-warning: #f39c12;
+    --mine-info: #3498db;
+    --mine-light: #ecf0f1;
+    --mine-dark: #2c3e50;
+    --mine-board-bg: #bdc3c7;
+    --mine-cell-revealed: #ecf0f1;
+    --mine-cell-hidden: #95a5a6;
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
 }
 
 h1:focus {
@@ -20,6 +36,198 @@ a, .btn-link {
 
 .content {
     padding-top: 1.1rem;
+}
+
+/* Modal Backdrop */
+.modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1040;
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Card Styling */
+.game-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    margin: 20px auto;
+    max-width: fit-content;
+}
+
+.config-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    margin: 40px auto;
+    max-width: 600px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Button Enhancements */
+.btn {
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+}
+
+/* Form Styling */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--mine-info);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--mine-dark);
+    margin-bottom: 8px;
+}
+
+/* Home Page */
+.home-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.home-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+.home-icon {
+    font-size: 5rem;
+    animation: bounce 2s infinite;
+}
+
+/* Table Styling */
+.modern-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modern-table th {
+    background: var(--mine-primary);
+    color: white;
+    font-weight: 500;
+    padding: 15px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.modern-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modern-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.modern-table tr:hover {
+    background-color: #e8f4f8;
+    transition: background-color 0.2s ease;
+}
+
+/* Difficulty Badges */
+.difficulty-preset {
+    display: inline-block;
+    margin: 10px;
+    min-width: 200px;
+}
+
+.difficulty-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-easy { background-color: #27ae60; color: white; }
+.badge-medium { background-color: #f39c12; color: white; }
+.badge-hard { background-color: #e74c3c; color: white; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .home-title { font-size: 2.5rem; }
+    .game-card { padding: 15px; }
+    .config-card { padding: 20px; }
 }
 
 .valid.modified:not([type=checkbox]) {

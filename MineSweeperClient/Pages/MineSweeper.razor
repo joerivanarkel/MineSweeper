@@ -5,63 +5,36 @@
 @inject IGame _game
 @inject ILogger _logger
 
-<style>
-    .row {
-        display: inline-flex;
-        width: @RowWidthInput;
-    }
-    .AmountOfMinesTime {
-        margin-left: @AmountOfTimeMarginLeft;
-        margin-bottom: 30px;
-    }
-</style>
+<PageTitle>Play MineSweeper</PageTitle>
 
-<div class="container text-center">
-    <div class="row">
-        <MineCounter AmountOfMinesLeft=@_game.Board.MineCount />
-        <Timer Game=@_game />
+<div class="game-card">
+    <GameHeader Game="@_game" OnReset="Reset" />
+
+    <div class="text-center" style="display: flex; justify-content: center;">
+        <GameBoard Game="@_game" 
+                   OnCellClick="HandleCellClick" 
+                   OnCellRightClick="HandleCellRightClick" />
     </div>
-</div>
-<div class="container text-center">
-    <div class="row text-center" @oncontextmenu:preventDefault @onmousedown:preventDefault>
 
-        @for (int i = (_game.Height - 1); i >= 0; i--)
-        {
-            <div class="row g-0">
-                @for (int z = 0; z <= _game.Width - 1; z++)
-                {
-                    var identifier = new { z, i };
-                    var cell = _game.Board.Cells[z, i];
-                    <div class="col cell">
-                        <input type="image" src="@cell.GetImageName()" id="@i, @z" value="@cell.Value"
-                    class="@cell.CellState.ToString() @cell.MineState.ToString()"
-                    @onmousedown="(args => btnClick(identifier.z, identifier.i, args))"
-                    @oncontextmenu="(args => btnRightClick(identifier.z, identifier.i))" @oncontextmenu:preventDefault
-                    @onmousedown:preventDefault />
-                    </div>
-                }
-            </div><br>
-        }
+    <div class="controls text-center">
+        <a href="" class="btn btn-secondary">
+            <span class="oi oi-home"></span> Home
+        </a>
+        <a href="heightandwidth" class="btn btn-info">
+            <span class="oi oi-wrench"></span> Settings
+        </a>
     </div>
 </div>
 
-<div class="@_game.GameState.ToString()">
-    @if (_game.GameState == GameState.Lost)
-    {
-        <h1>You lose!</h1>
-        <p>You made <strong>@_logger.ClickCount</strong>  moves in <strong>@_logger.Seconds</strong>  seconds</p>
-        <button type="button" @onclick="(() => Reset())" >Reset</button>
-    }
-    @if (_game.GameState == GameState.Win)
-    {
-        <h1>You win!</h1>
-        <p>You made <strong>@_logger.ClickCount</strong>  moves in <strong>@_logger.Seconds</strong>  seconds</p>
-        <button type="button" @onclick="(() => SaveScore())" >Save score</button>
-        <button type="button" @onclick="(() => Reset())" >Reset</button>
-    }
-</div>
+<GameModal Show="@(_game.GameState != GameState.Playing)"
+           IsWin="@(_game.GameState == GameState.Win)"
+           ClickCount="@_logger.ClickCount"
+           Seconds="@_logger.Seconds"
+           OnReset="Reset"
+           OnSaveScore="SaveScore"
+           OnGoHome="GoHome" />
 
-<div class="container text-center">
+<div class="container text-center mt-4">
     <div class="row">
         <MineSweeperClient.Components.Logger Logs=@_game.Logger.Logs />
     </div>
@@ -69,36 +42,34 @@
 
 @code {
 
-    public string RowWidthInput { get; set; }
-    public string AmountOfTimeMarginLeft { get;set;}
-
-    public void btnClick(int z, int i, MouseEventArgs args)
+    private async Task HandleCellClick((int x, int y, MouseEventArgs args) data)
     {
-        Console.WriteLine($"found value z: { z } found value i : { i}");
+        var (x, y, args) = data;
+        Console.WriteLine($"found value z: {x} found value i : {y}");
         var value = args.Button.ToString();
         Console.WriteLine(value);
+        
         if (args.Button == 0)
         {
-            _game.LeftClicked(z, i);
-            _game.WinCheck(z, i);
-            this.StateHasChanged();
+            _game.LeftClicked(x, y);
+            _game.WinCheck(x, y);
         }
-        if (args.Button == 1)
+        else if (args.Button == 1)
         {
-            _game.MiddleClicked(z, i);
-            _game.WinCheck(z,i);
-            this.StateHasChanged();
+            _game.MiddleClicked(x, y);
+            _game.WinCheck(x, y);
         }
-        if (args.Button == 2)
+        else if (args.Button == 2)
         {
-            _game.RightClicked(z, i);
-            this.StateHasChanged();
+            _game.RightClicked(x, y);
         }
+        
+        StateHasChanged();
     }
 
-    public void btnRightClick(int z, int i)
+    private void HandleCellRightClick((int x, int y) data)
     {
-
+        // Right click handled by mouse down event
     }
 
     public void Reset()
@@ -109,14 +80,16 @@
 
     public void SaveScore()
     {
-        _navigationManager.NavigateTo("score", false);
+        _navigationManager.NavigateTo("savescore", false);
+    }
+
+    public void GoHome()
+    {
+        _navigationManager.NavigateTo("", false);
     }
 
     protected override async Task OnInitializedAsync()
     {
         _game.Start();
-        var RowWidth = _game.Width * 50;
-        RowWidthInput = $"{RowWidth.ToString()}px";
-        AmountOfTimeMarginLeft = $"{(RowWidth - 242).ToString()}px !important";
     }
 }

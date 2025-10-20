@@ -1,0 +1,74 @@
+@using MineSweeperLogic
+@inject IGame Game
+@inject NavigationManager NavManager
+
+<div class="presets-container">
+    <h3 class="mb-4">
+        <span class="oi oi-cog"></span> Quick Start
+    </h3>
+    
+    <div class="row g-3">
+        <div class="col-lg-4 col-md-6">
+            <div class="difficulty-preset">
+                <button class="btn btn-success btn-lg w-100" @onclick="StartEasyGame">
+                    <div class="mb-2">
+                        <span class="difficulty-badge badge-easy">Easy</span>
+                    </div>
+                    <div>8x8 Grid</div>
+                    <div class="text-muted small">10 Mines</div>
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="difficulty-preset">
+                <button class="btn btn-warning btn-lg w-100" @onclick="StartMediumGame">
+                    <div class="mb-2">
+                        <span class="difficulty-badge badge-medium">Medium</span>
+                    </div>
+                    <div>16x16 Grid</div>
+                    <div class="text-muted small">40 Mines</div>
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="difficulty-preset">
+                <button class="btn btn-danger btn-lg w-100" @onclick="StartHardGame">
+                    <div class="mb-2">
+                        <span class="difficulty-badge badge-hard">Hard</span>
+                    </div>
+                    <div>30x16 Grid</div>
+                    <div class="text-muted small">99 Mines</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void StartEasyGame()
+    {
+        Game.Height = 8;
+        Game.Width = 8;
+        Game.AmountOfMines = 10;
+        Game.Start();
+        NavManager.NavigateTo("minesweeper");
+    }
+
+    private void StartMediumGame()
+    {
+        Game.Height = 16;
+        Game.Width = 16;
+        Game.AmountOfMines = 40;
+        Game.Start();
+        NavManager.NavigateTo("minesweeper");
+    }
+
+    private void StartHardGame()
+    {
+        Game.Height = 16;
+        Game.Width = 30;
+        Game.AmountOfMines = 99;
+        Game.Start();
+        NavManager.NavigateTo("minesweeper");
+    }
+}

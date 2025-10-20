@@ -2,34 +2,113 @@
     visibility: hidden;
 }
 
-::deep .Win {
-    visibility: visible;
-    position: absolute;
+/* Modal Backdrop */
+::deep .modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1040;
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Modal Container */
+::deep .game-modal {
+    position: fixed;
     top: 50%;
     left: 50%;
-    margin-right: -50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    border: solid 1px gray;
-    width: 200px;
-    height: 200px;
-    padding: 10px;
+    border-radius: 20px;
+    min-width: 400px;
+    max-width: 500px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    animation: slideIn 0.4s ease-out;
+}
+
+/* Win Modal */
+::deep .game-modal.Win {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    color: white;
+}
+
+/* Lost Modal */
+::deep .game-modal.Lost {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+}
+
+::deep .game-over-content,
+::deep .game-win-content {
+    padding: 40px;
     text-align: center;
 }
 
-::deep .Lost {
-    visibility: visible;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: solid 1px gray;
-    width: 200px;
-    height: 200px;
-    padding: 10px;
+::deep .icon-large {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 1s ease-in-out;
+}
+
+::deep .celebration {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+::deep .game-over-content h1,
+::deep .game-win-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+::deep .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+::deep .stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::deep .stat-item {
     text-align: center;
+}
+
+::deep .stat-label {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+::deep .stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+::deep .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+::deep .modal-actions .btn {
+    min-width: 140px;
 }
 
 ::deep .container.Playing {
@@ -82,4 +161,18 @@
 ::deep .col.cell {
     width: 50px;
     height: 50px;
+}
+
+::deep .col.cell input {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+::deep .col.cell input.Hidden:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+::deep .col.cell input.Flagged:hover {
+    transform: scale(1.1);
 }

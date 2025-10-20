@@ -1,16 +1,42 @@
 ﻿@page "/"
+@using MineSweeperClient.Components
 
 <PageTitle>MineSweeper</PageTitle>
 
-<div class="text-center">
-    <h1>Welcome to MineSweeper!</h1>
-    
-    <p class="lead">Configure your game and start playing!</p>
+<div class="home-container text-center">
+    <div class="home-icon">💣</div>
+    <h1 class="home-title">MineSweeper</h1>
+    <p class="lead text-white mb-3">Test your skills and avoid the mines!</p>
 
-    <div class="d-grid gap-3 col-6 mx-auto">
-        <a href="/heightandwidth" class="btn btn-primary btn-lg">Set Board Size</a>
-        <a href="/amountOfMines" class="btn btn-primary btn-lg">Set Mine Count</a>
-        <a href="/minesweeper" class="btn btn-success btn-lg">Play Game</a>
-        <a href="/score" class="btn btn-info btn-lg">View Scores</a>
+    <div class="config-card">
+        <DifficultyPresets />
+
+        <hr class="my-3" />
+
+        <h4 class="mb-3">
+            <span class="oi oi-wrench"></span> Custom Game
+        </h4>
+
+        <div class="row g-2">
+            <div class="col-md-6">
+                <a href="heightandwidth" class="btn btn-primary w-100">
+                    <span class="oi oi-resize-both"></span> Set Board Size
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="scores" class="btn btn-info w-100">
+                    <span class="oi oi-star"></span> High Scores
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-3 p-3 bg-light rounded">
+            <h6>🎮 How to Play</h6>
+            <ul class="text-start mb-0 small">
+                <li><strong>Left Click:</strong> Reveal a cell</li>
+                <li><strong>Right Click:</strong> Flag a mine</li>
+                <li><strong>Goal:</strong> Reveal all cells without hitting a mine!</li>
+            </ul>
+        </div>
     </div>
 </div>

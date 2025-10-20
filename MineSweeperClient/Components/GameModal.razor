@@ -1,0 +1,66 @@
+@using MineSweeperLogic
+
+@if (Show)
+{
+    <div class="modal-backdrop-custom"></div>
+    
+    <div class="game-modal @ModalType">
+        <div class="@(IsWin ? "game-win-content" : "game-over-content")">
+            <div class="icon-large @(IsWin ? "celebration" : "")">@Icon</div>
+            <h1>@Title</h1>
+            <p class="subtitle">@Subtitle</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Moves:</span>
+                    <span class="stat-value">@ClickCount</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time:</span>
+                    <span class="stat-value">@Seconds s</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                @if (IsWin)
+                {
+                    <button type="button" class="btn btn-success btn-lg" @onclick="OnSaveScore">
+                        <span class="oi oi-star"></span> Save Score
+                    </button>
+                }
+                <button type="button" class="btn @(IsWin ? "btn-primary" : "btn-danger") btn-lg" @onclick="OnReset">
+                    <span class="oi oi-reload"></span> @(IsWin ? "Play Again" : "Try Again")
+                </button>
+                <button type="button" class="btn btn-secondary btn-lg" @onclick="OnGoHome">
+                    <span class="oi oi-home"></span> Home
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool Show { get; set; }
+
+    [Parameter]
+    public bool IsWin { get; set; }
+
+    [Parameter]
+    public int ClickCount { get; set; }
+
+    [Parameter]
+    public int Seconds { get; set; }
+
+    [Parameter]
+    public EventCallback OnReset { get; set; }
+
+    [Parameter]
+    public EventCallback OnSaveScore { get; set; }
+
+    [Parameter]
+    public EventCallback OnGoHome { get; set; }
+
+    private string ModalType => IsWin ? "Win" : "Lost";
+    private string Icon => IsWin ? "🏆" : "💥";
+    private string Title => IsWin ? "Congratulations!" : "Game Over!";
+    private string Subtitle => IsWin ? "You cleared the minefield!" : "You hit a mine!";
+}
