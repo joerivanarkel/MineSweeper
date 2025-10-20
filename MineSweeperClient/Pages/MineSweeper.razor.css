@@ -176,3 +176,14 @@
 ::deep .col.cell input.Flagged:hover {
     transform: scale(1.1);
 }
+
+/* Board wrapper: centers the board when it fits, adds scroll when it overflows */
+.board-wrapper {
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 250px);
+}

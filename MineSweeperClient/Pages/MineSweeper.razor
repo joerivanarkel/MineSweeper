@@ -10,7 +10,7 @@
 <div class="game-card">
     <GameHeader Game="@_game" OnReset="Reset" />
 
-    <div class="text-center" style="display: flex; justify-content: center;">
+    <div class="board-wrapper">
         <GameBoard Game="@_game" 
                    OnCellClick="HandleCellClick" 
                    OnCellRightClick="HandleCellRightClick" />

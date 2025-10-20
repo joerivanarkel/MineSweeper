@@ -7,10 +7,10 @@
         <span class="oi oi-cog"></span> Quick Start
     </h3>
     
-    <div class="row g-3">
-        <div class="col-lg-4 col-md-6">
+    <div class="row g-3 justify-content-center">
+        <div class="col-auto">
             <div class="difficulty-preset">
-                <button class="btn btn-success btn-lg w-100" @onclick="StartEasyGame">
+                <button class="btn btn-success btn-lg" @onclick="StartEasyGame">
                     <div class="mb-2">
                         <span class="difficulty-badge badge-easy">Easy</span>
                     </div>
@@ -19,9 +19,9 @@
                 </button>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6">
+        <div class="col-auto">
             <div class="difficulty-preset">
-                <button class="btn btn-warning btn-lg w-100" @onclick="StartMediumGame">
+                <button class="btn btn-warning btn-lg" @onclick="StartMediumGame">
                     <div class="mb-2">
                         <span class="difficulty-badge badge-medium">Medium</span>
                     </div>
@@ -30,9 +30,9 @@
                 </button>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6">
+        <div class="col-auto">
             <div class="difficulty-preset">
-                <button class="btn btn-danger btn-lg w-100" @onclick="StartHardGame">
+                <button class="btn btn-danger btn-lg" @onclick="StartHardGame">
                     <div class="mb-2">
                         <span class="difficulty-badge badge-hard">Hard</span>
                     </div>
