@@ -47,23 +47,23 @@ public class Cell
         switch (CellState)
         {
             case CellState.Hidden:
-                return "/Images/Hidden.png";
+                return "Images/Hidden.png";
             case CellState.Flagged:
-                return "/Images/Flagged.png";
+                return "Images/Flagged.png";
             case CellState.Revealed:
                 switch (MineState)
                 {
                     case MineState.Mine:
-                        return "/Images/Mine.png";
+                        return "Images/Mine.png";
                     case MineState.Empty:
-                        return "/Images/Revealed.png";
+                        return "Images/Revealed.png";
                     case MineState.BordersMine:
-                        return $"/Images/{Value}.png";
+                        return $"Images/{Value}.png";
                     default:
-                        return "/Images/MineUnclicked.png";
+                        return "Images/MineUnclicked.png";
                 }
             default:
-                return "/Images/MineUnclicked.png";
+                return "Images/MineUnclicked.png";
         }
     }
 }
