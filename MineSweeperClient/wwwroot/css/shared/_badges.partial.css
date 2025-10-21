@@ -1,0 +1,7 @@
+/* Shared badges */
+
+.difficulty-preset { display: inline-block; margin: 10px; min-width: 200px; }
+.difficulty-badge  { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+.badge-easy   { background-color: var(--mine-success); color: var(--mine-white); }
+.badge-medium { background-color: var(--mine-warning); color: var(--mine-white); }
+.badge-hard   { background-color: var(--mine-danger); color: var(--mine-white); }

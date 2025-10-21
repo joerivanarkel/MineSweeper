@@ -1,0 +1,21 @@
+/* Shared button styles */
+
+.btn {
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active { transform: translateY(0); }
+
+.btn-success { background: linear-gradient(135deg, var(--mine-success) 0%, var(--mine-success-600) 100%); }
+.btn-danger  { background: linear-gradient(135deg, var(--mine-danger) 0%, var(--mine-danger-600) 100%); }
+.btn-primary { background: linear-gradient(135deg, var(--mine-info) 0%, var(--mine-info-600) 100%); }
+.btn-info    { background: linear-gradient(135deg, var(--mine-info) 0%, var(--mine-dark) 100%); }

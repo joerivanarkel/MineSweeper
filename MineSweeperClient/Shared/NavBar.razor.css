@@ -1,0 +1,9 @@
+/* NavBar.razor.css - component-scoped styles */
+
+.navbar {
+  backdrop-filter: saturate(120%) blur(6px);
+}
+
+.navbar .nav-link.active {
+  font-weight: 600;
+}

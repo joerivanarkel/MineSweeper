@@ -25,12 +25,12 @@
 }
 
 .game-modal.Win {
-    background: linear-gradient(135deg, #52c234 0%, #43a047 100%);
+    background: linear-gradient(135deg, var(--mine-success) 0%, var(--mine-success-600) 100%);
     color: white;
 }
 
 .game-modal.Lost {
-    background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+    background: linear-gradient(135deg, var(--mine-danger) 0%, var(--mine-danger-600) 100%);
     color: white;
 }
 

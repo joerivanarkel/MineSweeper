@@ -23,22 +23,23 @@
     border-radius: 1rem;
     font-size: 0.875rem;
     font-weight: 600;
+    
 }
 
 .badge-easy {
     background: rgba(40, 167, 69, 0.2);
-    color: #28a745;
-    border: 1px solid #28a745;
+    color: var(--mine-white);
+    border: 1px solid var(--mine-white);
 }
 
 .badge-medium {
     background: rgba(255, 193, 7, 0.2);
-    color: #ffc107;
-    border: 1px solid #ffc107;
+    color: var(--mine-white);
+    border: 1px solid var(--mine-white);
 }
 
 .badge-hard {
     background: rgba(220, 53, 69, 0.2);
-    color: #dc3545;
-    border: 1px solid #dc3545;
+    color: var(--mine-white);
+    border: 1px solid var(--mine-white);
 }

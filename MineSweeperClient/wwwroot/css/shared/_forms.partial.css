@@ -1,0 +1,21 @@
+/* Shared form helpers */
+
+.form-card { max-width: 640px; margin-inline: auto; }
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 2px solid var(--mine-border);
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--mine-info);
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--mine-dark);
+  margin-bottom: 8px;
+}

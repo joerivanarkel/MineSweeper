@@ -31,13 +31,13 @@
 
 /* Win Modal */
 ::deep .game-modal.Win {
-    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    background: linear-gradient(135deg, var(--mine-success) 0%, var(--mine-success-600) 100%);
     color: white;
 }
 
 /* Lost Modal */
 ::deep .game-modal.Lost {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: linear-gradient(135deg, var(--mine-danger) 0%, var(--mine-danger-600) 100%);
     color: white;
 }
 
